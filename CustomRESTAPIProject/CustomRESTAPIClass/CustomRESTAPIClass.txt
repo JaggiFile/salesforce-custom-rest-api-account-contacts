@@ -1,0 +1,50 @@
+@RestResource(urlMapping='/AccountsWithContacts/*')
+global with sharing class CustomRESTAPIClass {
+
+    @HttpGet
+    global static AccountWrapper getAccountData() {
+        RestRequest req = RestContext.request;
+        
+        String accountId = req.requestURI.substringAfter('/AccountsWithContacts/');
+
+        
+        Account acc = [
+            SELECT Id, Name,
+                (SELECT Id, FirstName, LastName FROM Contacts)
+            FROM Account
+            WHERE Id = :accountId
+            LIMIT 1
+        ];
+
+        
+        AccountWrapper wrap = new AccountWrapper();
+        wrap.accountId = acc.Id;
+        wrap.accountName = acc.Name;
+
+        for (Contact c : acc.Contacts) {
+            wrap.contacts.add(new ContactWrapper(c.Id, c.FirstName, c.LastName));
+        }
+
+        return wrap;
+    }
+
+    
+    global class AccountWrapper {
+        public String accountId;
+        public String accountName;
+        public List<ContactWrapper> contacts = new List<ContactWrapper>();
+    }
+
+    
+    global class ContactWrapper {
+        public String contactId;
+        public String firstName;
+        public String lastName;
+
+        public ContactWrapper(String id, String fName, String lName) {
+            contactId = id;
+            firstName = fName;
+            lastName = lName;
+        }
+    }
+}
