@@ -25,24 +25,26 @@ This project demonstrates how to create and test a Custom REST API in Salesforce
 The REST API is exposed at the following endpoint:
 
 
-Replace `{AccountId}` with a valid 15- or 18-character Account record ID.
+In this example:
+- `001d200000XuVFtAAN` is a real Account record ID from the Salesforce Developer Org used in testing.
+- When the endpoint is called using GET method, the response returns the Account's ID and Name, along with all its related Contacts in JSON format.
 
 ### Example JSON Response
 
 ```json
 {
-  "accountId": "001XXXXXXXXXXXX",
-  "accountName": "Test Account",
+  "accountId": "001d200000XuVFtAAN",
+  "accountName": "Dickenson plc",
   "contacts": [
     {
-      "contactId": "003XXXXXXXXXXXX",
+      "contactId": "003d200000YtYbCAAX",
       "firstName": "John",
       "lastName": "Doe"
     },
     {
-      "contactId": "003XXXXXXXXXXXY",
-      "firstName": "Jane",
-      "lastName": "Smith"
+      "contactId": "003d200000YtYbDAAX",
+      "firstName": "Andy",
+      "lastName": "Young"
     }
   ]
 }
